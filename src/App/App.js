@@ -1,9 +1,9 @@
 import React from 'react';
 import firebase from 'firebase/app';
-// import 'firebase/auth';
 
 import firebaseConnection from '../helpers/data/connection';
 import Auth from '../components/Auth/Auth';
+import MyNavbar from '../components/MyNavbar/MyNavbar';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
@@ -32,6 +32,7 @@ class App extends React.Component {
   render() {
     return (
       < div className = "App" >
+        <MyNavbar authed={this.state.authed}/>
         <h1>App</h1>
         {
           (this.state.authed)
