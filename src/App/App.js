@@ -2,10 +2,11 @@ import React from 'react';
 import firebase from 'firebase/app';
 
 import firebaseConnection from '../helpers/data/connection';
+
 import Auth from '../components/Auth/Auth';
+import BoardsContainer from '../components/BoardsContainer/BoardsContainer';
 import MyNavbar from '../components/MyNavbar/MyNavbar';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 
 firebaseConnection.firebaseApp();
@@ -36,7 +37,7 @@ class App extends React.Component {
         <h1>App</h1>
         {
           (this.state.authed)
-            ? (<div>Already Authed</div>)
+            ? (<BoardsContainer />)
             : (<Auth />)
         }
       </div >
