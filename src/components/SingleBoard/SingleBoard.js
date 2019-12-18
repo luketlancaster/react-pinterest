@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import PinsContainer from '../PinsContainer/PinsContainer';
+import Pin from '../Pin/Pin';
 
 import boardData from '../../helpers/data/boardData';
 import pinData from '../../helpers/data/pinData';
@@ -22,17 +22,31 @@ class SingleBoard extends React.Component {
     boardData.getSingleBoard(selectedBoardId)
       .then(({ data }) => {
         this.setState({ board: data });
-        pinData.getPinsByBoardId(selectedBoardId)
-          .then((response) => this.setState({ pins: response }))
-          .catch((errorFromGetPins) => console.error({ errorFromGetPins }));
+        this.getPinData(selectedBoardId);
       })
       .catch((errorFromSingleBoard) => console.error({ errorFromSingleBoard }));
+  }
+
+  getPinData = (boardId) => {
+    pinData.getPinsByBoardId(boardId)
+      .then((response) => this.setState({ pins: response }))
+      .catch((errorFromGetPins) => console.error({ errorFromGetPins }));
   }
 
   removeSelectedBoardId = (e) => {
     e.preventDefault();
     const { setSingleBoard } = this.props;
     setSingleBoard(null);
+  }
+
+  deleteSinglePin = (pinId) => {
+    const { selectedBoardId } = this.props;
+
+    pinData.deletePin(pinId)
+      .then(() => {
+        this.getPinData(selectedBoardId);
+      })
+      .catch((errFromDeletePin) => console.error({ errFromDeletePin }));
   }
 
   render() {
@@ -45,7 +59,7 @@ class SingleBoard extends React.Component {
           <h2>{board.name}</h2>
           <p>{board.description}</p>
           <div className="d-flex flex-wrap">
-            <PinsContainer pins={pins} />
+            {pins.map((pin) => <Pin key={pin.id} pin={pin} deleteSinglePin={this.deleteSinglePin} />)}
           </div>
         </div>
       </div>
